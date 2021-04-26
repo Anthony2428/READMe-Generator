@@ -15,7 +15,7 @@ const questions = [
 'Instructions on how to contact: (If none, enter "none")'
 ];
 // CREATED: Array for license choices
-const licenses = ["Open", "Apache", "MIT", "Mozilla", "GNU", "ISC", "None"]
+const licenses = ["Apache", "MIT", "Mozilla", "GNU", "ISC", "None"]
 // TODO: Create a function to write README file
 function writeToFile(fileName, data) {}
 
