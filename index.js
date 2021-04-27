@@ -1,26 +1,34 @@
 // TODO: Include packages needed for this application
+const fs = require('fs');
 const inquirer = require('inquirer');
 const generateMarkdown = require("./utils/generateMarkdown");
+
 // TODO: Create an array of questions for user input
 const questions = [
 'What is the title of this application? ', 
 'What is the main objective of this application? ', 
 'List steps for installing this application: ', 
 'Write a brief description about how to use this application: ', 
-'List contributors of this application (One at a time, enter "done" to finish listing): ', 
+'List the Github username\'s of any contributors of this application (One at a time, enter "done" to finish listing): ', 
 'Include tests for this application: ', 
 'Which license is used for this application? ', 
 'Enter your GitHub username: ', 
 'Enter your email: ', 
 'Instructions on how to contact: (If none, enter "none")'
 ];
+
 // CREATED: Array for license choices
-const licenses = ["Apache", "MIT", "Mozilla", "GNU", "ISC", "None"]
+const licenses = ["Apache", "MIT", "Mozilla", "GNU", "ISC", "None"];
+
 // TODO: Create a function to write README file
-function writeToFile(fileName, data) {}
+const writeToFile = async (fileName, data) => {
+    fs.writeFile(fileName, await generateMarkdown(data, contributors), (err) =>
+            err ? console.error(err) : console.log('README.md Created!')
+    );
+};
 
 // TODO: Create a function to initialize app
-const contributors = []
+const contributors = [];
 const init = () => {
     inquirer.prompt([
         {
@@ -64,12 +72,6 @@ const init = () => {
             message: questions[6],
             choices: licenses,
             name: 'license',
-            validate: async (input) => {
-                if (input === 'none') {
-                    return true;;
-                }
-                return input;
-             }
         },
         {
             type: 'input',
@@ -85,18 +87,9 @@ const init = () => {
             type: 'input',
             message: questions[9],
             name: 'instructions',
-            validate: async (input) => {
-                if (input !== 'none') {
-
-                   return input;
-                }
-                return true;
-             }
         }
     ])
-    .then(response => {
-        generateMarkdown(response, contributors);
-    });
-} 
+    .then(response => { writeToFile('README.md', response) });
+};
 // Function call to initialize app
 init();
